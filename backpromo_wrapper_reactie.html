@@ -8,99 +8,93 @@
   @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap');
   :root {
     --dark: #200F07; --lime: #C5E384; --off: #F5F5F0;
-    --lime-dim: #9db85e; --dark-soft: #3a2018;
+    --lime-dim: #9db85e;
     --text-muted: rgba(245,245,240,0.45); --text-mid: rgba(245,245,240,0.75);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: var(--dark); color: var(--off); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
-  body::before {
-    content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: 0.6;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-  }
+  body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: 0.5;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); }
   .app { position: relative; z-index: 1; max-width: 620px; margin: 0 auto; padding: 0 24px 80px; }
   .header { display: flex; align-items: center; justify-content: space-between; padding: 28px 0 40px; border-bottom: 1px solid rgba(197,227,132,0.12); margin-bottom: 44px; }
   .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 20px; letter-spacing: -0.5px; }
   .logo span { color: var(--lime); }
   .role-pill { font-family: 'DM Mono', monospace; font-size: 11px; padding: 5px 12px; border-radius: 99px; background: rgba(197,227,132,0.1); color: var(--lime); border: 1px solid rgba(197,227,132,0.2); }
-
   .panel { display: none; animation: fadeIn 0.35s ease; }
   .panel.active { display: block; }
   @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
-
   .panel-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 26px; letter-spacing: -0.5px; margin-bottom: 6px; }
   .panel-title span { color: var(--lime); }
   .panel-sub { font-size: 14px; color: var(--text-mid); margin-bottom: 32px; line-height: 1.6; }
-
-  /* aanvraag kaart */
   .aanvraag-card { background: rgba(197,227,132,0.06); border: 1px solid rgba(197,227,132,0.18); border-radius: 12px; padding: 20px; margin-bottom: 28px; }
-  .aanvraag-title { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; color: var(--lime); margin-bottom: 14px; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase; }
-  .aanvraag-rows { display: flex; flex-direction: column; gap: 8px; }
-  .aanvraag-row { display: flex; gap: 12px; font-size: 13px; }
+  .aanvraag-title { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--lime); margin-bottom: 14px; }
+  .aanvraag-row { display: flex; gap: 12px; font-size: 13px; margin-bottom: 8px; }
+  .aanvraag-row:last-child { margin-bottom: 0; }
   .aanvraag-label { color: var(--text-muted); width: 110px; flex-shrink: 0; font-family: 'DM Mono', monospace; font-size: 12px; }
   .aanvraag-val { color: var(--off); font-weight: 500; }
-  .ontwerp-link { display: inline-flex; align-items: center; gap: 6px; background: rgba(197,227,132,0.1); border: 1px solid rgba(197,227,132,0.25); border-radius: 6px; padding: 6px 12px; font-size: 12px; font-family: 'DM Mono', monospace; color: var(--lime); text-decoration: none; margin-top: 4px; transition: background 0.2s; }
+  .ontwerp-link { display: inline-flex; align-items: center; gap: 6px; background: rgba(197,227,132,0.1); border: 1px solid rgba(197,227,132,0.25); border-radius: 6px; padding: 6px 12px; font-size: 12px; font-family: 'DM Mono', monospace; color: var(--lime); text-decoration: none; transition: background 0.2s; }
   .ontwerp-link:hover { background: rgba(197,227,132,0.18); }
-
-  /* form */
   .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
   .form-grid.single { grid-template-columns: 1fr; }
   .field { display: flex; flex-direction: column; gap: 7px; }
   .field label { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase; color: var(--text-muted); }
-  .field input, .field select, .field textarea { background: rgba(245,245,240,0.05); border: 1px solid rgba(245,245,240,0.1); border-radius: 8px; padding: 12px 14px; color: var(--off); font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none; transition: border-color 0.2s, background 0.2s; width: 100%; }
+  .field input, .field select, .field textarea { background: rgba(245,245,240,0.05); border: 1px solid rgba(245,245,240,0.1); border-radius: 8px; padding: 12px 14px; color: var(--off); font-family: 'DM Sans', sans-serif; font-size: 14px; outline: none; transition: border-color 0.2s; width: 100%; }
   .field input:focus, .field select:focus, .field textarea:focus { border-color: rgba(197,227,132,0.4); background: rgba(245,245,240,0.07); }
   .field select option { background: #200F07; color: #F5F5F0; }
-  .field textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
+  .field textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
 
-  /* status toggle */
+  /* prijs calculator */
+  .prijs-calc { background: rgba(245,245,240,0.04); border: 1px solid rgba(245,245,240,0.1); border-radius: 10px; padding: 16px; margin-bottom: 16px; }
+  .prijs-calc-title { font-family: 'DM Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 12px; }
+  .prijs-row { display: flex; justify-content: space-between; align-items: center; font-size: 13px; padding: 6px 0; border-bottom: 1px solid rgba(245,245,240,0.06); }
+  .prijs-row:last-child { border-bottom: none; padding-top: 10px; }
+  .prijs-label { color: var(--text-mid); }
+  .prijs-val { font-family: 'DM Mono', monospace; font-weight: 500; color: var(--off); }
+  .prijs-total-label { font-weight: 700; color: var(--off); font-size: 14px; }
+  .prijs-total-val { font-family: 'DM Mono', monospace; font-weight: 700; color: var(--lime); font-size: 16px; }
+  .commissie-note { font-size: 11px; color: var(--text-muted); margin-top: 8px; font-family: 'DM Mono', monospace; }
+
   .status-toggle { display: flex; gap: 10px; margin-bottom: 24px; }
-  .status-btn { flex: 1; padding: 14px; border-radius: 10px; border: 1.5px solid rgba(245,245,240,0.12); background: transparent; color: var(--text-mid); font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.2s; text-align: center; }
+  .status-btn { flex: 1; padding: 14px; border-radius: 10px; border: 1.5px solid rgba(245,245,240,0.12); background: transparent; color: var(--text-mid); font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; cursor: pointer; transition: all 0.2s; }
   .status-btn.selected-ok { border-color: var(--lime); background: rgba(197,227,132,0.1); color: var(--lime); }
   .status-btn.selected-nee { border-color: #ff7070; background: rgba(255,112,112,0.08); color: #ff9090; }
   .status-btn:hover:not(.selected-ok):not(.selected-nee) { border-color: rgba(245,245,240,0.25); color: var(--off); }
-
   .afwijzing-veld { display: none; margin-bottom: 16px; }
   .afwijzing-veld.show { display: block; }
 
-  /* btns */
-  .btn { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; padding: 13px 28px; border-radius: 8px; border: none; cursor: pointer; transition: all 0.2s; letter-spacing: 0.2px; }
+  .btn { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 14px; padding: 13px 28px; border-radius: 8px; border: none; cursor: pointer; transition: all 0.2s; }
   .btn-primary { background: var(--lime); color: var(--dark); }
   .btn-primary:hover { background: #d4f094; transform: translateY(-1px); }
-  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
   .btn-danger { background: rgba(255,112,112,0.15); color: #ff9090; border: 1.5px solid rgba(255,112,112,0.3); }
   .btn-danger:hover { background: rgba(255,112,112,0.25); }
-  .btn-row { display: flex; gap: 10px; align-items: center; margin-top: 8px; }
+  .btn-row { display: flex; gap: 10px; align-items: center; margin-top: 16px; }
 
-  /* succes */
   .success-icon { width: 64px; height: 64px; border-radius: 50%; background: rgba(197,227,132,0.15); border: 2px solid var(--lime); display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 24px; }
   .success-title { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 28px; text-align: center; color: var(--lime); margin-bottom: 8px; }
   .success-sub { text-align: center; color: var(--text-mid); font-size: 14px; line-height: 1.6; margin-bottom: 32px; }
-
-  .recipients { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+  .confirm-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 24px; }
+  .confirm-card { background: rgba(197,227,132,0.06); border: 1px solid rgba(197,227,132,0.15); border-radius: 10px; padding: 14px; }
+  .confirm-card-label { font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 5px; }
+  .confirm-card-val { font-size: 14px; font-weight: 500; }
+  .recipients { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
   .recipient { display: flex; align-items: center; gap: 12px; background: rgba(245,245,240,0.04); border: 1px solid rgba(245,245,240,0.08); border-radius: 8px; padding: 12px 16px; }
   .recipient-icon { width: 34px; height: 34px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
   .recipient-name { font-size: 14px; font-weight: 500; flex: 1; }
   .recipient-email { font-size: 12px; color: var(--text-muted); font-family: 'DM Mono', monospace; }
-  .recipient-status { font-size: 11px; color: var(--lime); font-family: 'DM Mono', monospace; background: rgba(197,227,132,0.1); padding: 3px 8px; border-radius: 99px; }
-
-  .confirm-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 28px; }
-  .confirm-card { background: rgba(197,227,132,0.06); border: 1px solid rgba(197,227,132,0.15); border-radius: 10px; padding: 16px; }
-  .confirm-card-label { font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-muted); margin-bottom: 6px; }
-  .confirm-card-val { font-size: 14px; font-weight: 500; color: var(--off); }
+  .recipient-status { font-size: 11px; color: var(--lime); background: rgba(197,227,132,0.1); padding: 3px 8px; border-radius: 99px; font-family: 'DM Mono', monospace; }
 
   .error-msg { background: rgba(255,80,80,0.1); border: 1px solid rgba(255,80,80,0.3); border-radius: 8px; padding: 12px 16px; font-size: 13px; color: #ff8080; margin-bottom: 16px; display: none; }
   .error-msg.show { display: block; }
-
-  .loading-overlay { display: none; position: fixed; inset: 0; background: rgba(32,15,7,0.85); z-index: 100; align-items: center; justify-content: center; flex-direction: column; gap: 16px; backdrop-filter: blur(4px); }
+  .loading-overlay { display: none; position: fixed; inset: 0; background: rgba(32,15,7,0.85); z-index: 9999; align-items: center; justify-content: center; flex-direction: column; gap: 16px; backdrop-filter: blur(4px); }
   .loading-overlay.show { display: flex; }
   .loading-spinner { width: 40px; height: 40px; border: 2px solid rgba(197,227,132,0.2); border-top-color: var(--lime); border-radius: 50%; animation: spin 0.8s linear infinite; }
   @keyframes spin { to { transform: rotate(360deg); } }
   .loading-text { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--lime); }
-
   @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } .confirm-cards { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
-
 <div class="loading-overlay" id="loadingOverlay">
   <div class="loading-spinner"></div>
   <div class="loading-text" id="loadingText">Bevestigingen versturen...</div>
@@ -115,24 +109,20 @@
   <!-- PANEL 1: Reactieformulier -->
   <div class="panel active" id="panel1">
     <div class="panel-title">Wrapaanvraag <span>beoordelen</span></div>
-    <div class="panel-sub">Bekijk de aanvraagdetails hieronder en geef je reactie. Bij akkoord ontvangen de klant en autohouder automatisch een bevestiging.</div>
-
+    <div class="panel-sub">Bekijk de aanvraag en geef je reactie. Bij akkoord ontvangen klant en autohouder automatisch een bevestiging.</div>
     <div class="error-msg" id="errorMsg"></div>
 
-    <!-- Aanvraag details -->
     <div class="aanvraag-card">
       <div class="aanvraag-title">Aanvraagdetails</div>
-      <div class="aanvraag-rows">
-        <div class="aanvraag-row"><span class="aanvraag-label">Referentie</span><span class="aanvraag-val" id="detailRef">BP-2024-0847</span></div>
-        <div class="aanvraag-row"><span class="aanvraag-label">Klant</span><span class="aanvraag-val" id="detailKlant">Bakkerij De Wit</span></div>
-        <div class="aanvraag-row"><span class="aanvraag-label">Voertuig</span><span class="aanvraag-val" id="detailVoertuig">Bestelbus · NL-482-X</span></div>
-        <div class="aanvraag-row"><span class="aanvraag-label">Wraplocatie</span><span class="aanvraag-val" id="detailLocatie">Beide zijkanten</span></div>
-        <div class="aanvraag-row"><span class="aanvraag-label">Postcode</span><span class="aanvraag-val" id="detailPostcode">4811 KA</span></div>
-        <div class="aanvraag-row"><span class="aanvraag-label">Wensen</span><span class="aanvraag-val" id="detailWensen">Hoogwaardig laminaat, voor eind van de maand.</span></div>
-        <div class="aanvraag-row" id="ontwerpRow" style="display:none;">
-          <span class="aanvraag-label">Ontwerp</span>
-          <span class="aanvraag-val"><a class="ontwerp-link" id="ontwerpLink" href="#" target="_blank">📎 Bekijk ontwerp →</a></span>
-        </div>
+      <div class="aanvraag-row"><span class="aanvraag-label">Referentie</span><span class="aanvraag-val" id="detailRef">BP-2024-0847</span></div>
+      <div class="aanvraag-row"><span class="aanvraag-label">Klant</span><span class="aanvraag-val" id="detailKlant">Bakkerij De Wit</span></div>
+      <div class="aanvraag-row"><span class="aanvraag-label">Voertuig</span><span class="aanvraag-val" id="detailVoertuig">Bestelbus · NL-482-X</span></div>
+      <div class="aanvraag-row"><span class="aanvraag-label">Wraplocatie</span><span class="aanvraag-val" id="detailLocatie">Beide zijkanten</span></div>
+      <div class="aanvraag-row"><span class="aanvraag-label">Postcode</span><span class="aanvraag-val" id="detailPostcode">4811 KA</span></div>
+      <div class="aanvraag-row"><span class="aanvraag-label">Wensen</span><span class="aanvraag-val" id="detailWensen">—</span></div>
+      <div class="aanvraag-row" id="ontwerpRow" style="display:none;">
+        <span class="aanvraag-label">Ontwerp</span>
+        <span class="aanvraag-val"><a class="ontwerp-link" id="ontwerpLink" href="#" target="_blank">📎 Bekijk ontwerp →</a></span>
       </div>
     </div>
 
@@ -147,35 +137,54 @@
 
     <!-- Akkoord velden -->
     <div id="akkoordVelden">
-      <div class="form-grid">
+
+      <!-- Prijs + commissie calculator -->
+      <div class="form-grid single">
         <div class="field">
-          <label>Indicatieprijs (excl. BTW)</label>
-          <input type="text" id="prijs" placeholder="bijv. € 380" value="€ 380">
+          <label>Jouw prijs excl. BTW (€)</label>
+          <input type="number" id="prijsInput" placeholder="bijv. 380" min="0" step="1" oninput="bereken()" value="380">
         </div>
+      </div>
+
+      <div class="prijs-calc">
+        <div class="prijs-calc-title">Prijsberekening</div>
+        <div class="prijs-row">
+          <span class="prijs-label">Jouw prijs</span>
+          <span class="prijs-val" id="calcJouw">€ 380,00</span>
+        </div>
+        <div class="prijs-row">
+          <span class="prijs-label">BackPromo commissie (15%)</span>
+          <span class="prijs-val" id="calcCommissie">€ 38,00</span>
+        </div>
+        <div class="prijs-row">
+          <span class="prijs-total-label">Totaal voor klant</span>
+          <span class="prijs-total-val" id="calcTotaal">€ 418,00</span>
+        </div>
+        <div class="commissie-note">De klant betaalt het totaalbedrag. Jij ontvangt jouw prijs via BackPromo.</div>
+      </div>
+
+      <div class="form-grid">
         <div class="field">
           <label>Voorgestelde datum</label>
           <input type="date" id="datum">
         </div>
-      </div>
-      <div class="form-grid">
         <div class="field">
-          <label>Tijdslot</label>
-          <select id="tijd">
-            <option>08:00 – 10:00</option>
-            <option>10:00 – 12:00</option>
-            <option>13:00 – 15:00</option>
-            <option>15:00 – 17:00</option>
-          </select>
+          <label>Tijdstip (bijv. 09:00 – 11:00)</label>
+          <input type="text" id="tijd" placeholder="bijv. 09:00 – 11:00" value="09:00 – 11:00">
         </div>
+      </div>
+
+      <div class="form-grid single">
         <div class="field">
           <label>Adres wraplocatie</label>
-          <input type="text" id="adres" placeholder="bijv. Industrieweg 12, Breda">
+          <input type="text" id="adres" placeholder="bijv. Industrieweg 14, Breda">
         </div>
       </div>
+
       <div class="form-grid single">
         <div class="field">
           <label>Opmerking (optioneel)</label>
-          <textarea id="opmerking" placeholder="bijv. materiaal beschikbaar, bijzondere instructies...">Materiaal op voorraad. Voertuig graag schoon aanleveren. Wij bevestigen uiterlijk 24u vooraf.</textarea>
+          <textarea id="opmerking" placeholder="bijv. voertuig schoon aanleveren, materiaal beschikbaar...">Materiaal op voorraad. Voertuig graag schoon aanleveren. Wij bevestigen uiterlijk 24u vooraf.</textarea>
         </div>
       </div>
     </div>
@@ -185,7 +194,7 @@
       <div class="form-grid single">
         <div class="field">
           <label>Reden (optioneel)</label>
-          <textarea id="afwijzingReden" placeholder="bijv. niet beschikbaar in deze periode, regio buiten bereik..."></textarea>
+          <textarea id="afwijzingReden" placeholder="bijv. niet beschikbaar in deze periode..."></textarea>
         </div>
       </div>
     </div>
@@ -199,184 +208,160 @@
   <div class="panel" id="panel2">
     <div class="success-icon">✓</div>
     <div class="success-title">Akkoord verstuurd</div>
-    <div class="success-sub">De klant en autohouder hebben automatisch een bevestiging ontvangen met jouw prijs, datum en tijdslot.</div>
-
+    <div class="success-sub">Klant en autohouder hebben automatisch een bevestiging ontvangen met jouw prijs, datum en adres.</div>
     <div class="confirm-cards" id="confirmCards"></div>
     <div class="recipients" id="recipientsList"></div>
-
-    <div style="text-align:center;font-size:13px;color:var(--text-muted);font-family:'DM Mono',monospace;">
-      Referentie: <span id="finalRef"></span>
-    </div>
+    <div style="text-align:center;font-size:13px;color:var(--text-muted);font-family:'DM Mono',monospace;">Referentie: <span id="finalRef"></span></div>
   </div>
 
-  <!-- PANEL 3: Afwijzing verstuurd -->
+  <!-- PANEL 3: Afwijzing -->
   <div class="panel" id="panel3">
     <div class="success-icon" style="border-color:#ff9090;background:rgba(255,112,112,0.1);">✕</div>
     <div class="success-title" style="color:#ff9090;">Afwijzing verstuurd</div>
     <div class="success-sub">BackPromo zoekt automatisch de volgende beschikbare wrapper voor deze aanvraag.</div>
-    <div style="text-align:center;font-size:13px;color:var(--text-muted);font-family:'DM Mono',monospace;">
-      Referentie: <span id="finalRefAfwijzing"></span>
-    </div>
+    <div style="text-align:center;font-size:13px;color:var(--text-muted);font-family:'DM Mono',monospace;">Referentie: <span id="finalRefAfwijzing"></span></div>
   </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
-  // ── Config ──────────────────────────────────────────────────────
-  const EMAILJS_PUBLIC_KEY   = 'G6so13WPHZ0rLzRuA';
-  const EMAILJS_SERVICE_ID   = 'service_8liyr13';
-  const TEMPLATE_BEVESTIGING = 'template_gu698hk';
-  const DEMO_EMAIL           = 'daafheijnekamp@gmail.com';
+  const EMAILJS_PUBLIC_KEY    = 'G6so13WPHZ0rLzRuA';
+  const EMAILJS_SERVICE_ID    = 'service_8liyr13';
+  const TEMPLATE_BEVESTIGING  = 'template_gu698hk';
+  const DEMO_EMAIL            = 'daafheijnekamp@gmail.com';
+  const COMMISSIE             = 0.15;
 
   emailjs.init(EMAILJS_PUBLIC_KEY);
 
-  // ── URL params lezen ────────────────────────────────────────────
-  // In productie komen ref, wrapper, klant etc. via URL params
-  // Voor de demo vullen we demo-waarden in, aangevuld met URL params indien aanwezig
-  const params = new URLSearchParams(window.location.search);
-
+  // ── URL params ───────────────────────────────────────────────────
+  const p = new URLSearchParams(window.location.search);
   const dealData = {
-    ref:          params.get('ref')          || 'BP-2024-0847',
-    wrapperNaam:  params.get('wrapper')      || 'VanWrap Breda',
-    klantNaam:    params.get('klant')        || 'Bakkerij De Wit',
-    klantEmail:   params.get('klantEmail')   || DEMO_EMAIL,
-    houderNaam:   params.get('houder')       || 'Jan Hendriks',
-    houderEmail:  params.get('houderEmail')  || DEMO_EMAIL,
-    voertuig:     params.get('voertuig')     || 'Bestelbus',
-    kenteken:     params.get('kenteken')     || 'NL-482-X',
-    wrapLocatie:  params.get('locatie')      || 'Beide zijkanten',
-    postcode:     params.get('postcode')     || '4811 KA',
-    wensen:       params.get('wensen')       || 'Hoogwaardig laminaat, voor eind van de maand.',
-    ontwerpUrl:   params.get('ontwerp')      || null,
+    ref:         p.get('ref')         || 'BP-2024-0847',
+    wrapperNaam: p.get('wrapper')     || 'VanWrap Breda',
+    klantNaam:   p.get('klant')       || 'Bakkerij De Wit',
+    klantEmail:  p.get('klantEmail')  || DEMO_EMAIL,
+    houderNaam:  p.get('houder')      || 'Jan Hendriks',
+    houderEmail: p.get('houderEmail') || DEMO_EMAIL,
+    voertuig:    p.get('voertuig')    || 'Bestelbus',
+    kenteken:    p.get('kenteken')    || 'NL-482-X',
+    wrapLocatie: p.get('locatie')     || 'Beide zijkanten',
+    postcode:    p.get('postcode')    || '4811 KA',
+    wensen:      p.get('wensen')      || '—',
+    ontwerpUrl:  p.get('ontwerp')     || null,
   };
 
-  // Vul aanvraagkaart in
-  document.getElementById('detailRef').textContent     = dealData.ref;
-  document.getElementById('detailKlant').textContent   = dealData.klantNaam;
+  // Vul kaart in
+  document.getElementById('detailRef').textContent      = dealData.ref;
+  document.getElementById('detailKlant').textContent    = dealData.klantNaam;
   document.getElementById('detailVoertuig').textContent = dealData.voertuig + ' · ' + dealData.kenteken;
   document.getElementById('detailLocatie').textContent  = dealData.wrapLocatie;
   document.getElementById('detailPostcode').textContent = dealData.postcode;
   document.getElementById('detailWensen').textContent   = dealData.wensen || '—';
-
   if (dealData.ontwerpUrl) {
     document.getElementById('ontwerpRow').style.display = 'flex';
     document.getElementById('ontwerpLink').href = dealData.ontwerpUrl;
   }
 
-  // Zet standaard datum op morgen
-  const morgen = new Date();
-  morgen.setDate(morgen.getDate() + 7);
-  document.getElementById('datum').value = morgen.toISOString().split('T')[0];
+  // Standaard datum = 7 dagen
+  const d = new Date(); d.setDate(d.getDate()+7);
+  document.getElementById('datum').value = d.toISOString().split('T')[0];
+
+  // ── Commissie berekening ─────────────────────────────────────────
+  function fmt(n) { return '€ ' + n.toFixed(2).replace('.', ','); }
+
+  function bereken() {
+    const raw = parseFloat(document.getElementById('prijsInput').value) || 0;
+    const commissie = raw * COMMISSIE;
+    const totaal = raw + commissie;
+    document.getElementById('calcJouw').textContent      = fmt(raw);
+    document.getElementById('calcCommissie').textContent = fmt(commissie);
+    document.getElementById('calcTotaal').textContent    = fmt(totaal);
+  }
+  bereken();
 
   // ── Status toggle ────────────────────────────────────────────────
   let selectedStatus = 'akkoord';
-
-  function selectStatus(status) {
-    selectedStatus = status;
-    document.getElementById('btnAkkoord').className  = 'status-btn' + (status === 'akkoord'  ? ' selected-ok'  : '');
-    document.getElementById('btnAfwijzen').className = 'status-btn' + (status === 'afwijzen' ? ' selected-nee' : '');
-    document.getElementById('akkoordVelden').style.display  = status === 'akkoord'  ? 'block' : 'none';
-    document.getElementById('afwijzingVeld').classList.toggle('show', status === 'afwijzen');
-
+  function selectStatus(s) {
+    selectedStatus = s;
+    document.getElementById('btnAkkoord').className  = 'status-btn' + (s==='akkoord'  ? ' selected-ok'  : '');
+    document.getElementById('btnAfwijzen').className = 'status-btn' + (s==='afwijzen' ? ' selected-nee' : '');
+    document.getElementById('akkoordVelden').style.display = s==='akkoord' ? 'block' : 'none';
+    document.getElementById('afwijzingVeld').classList.toggle('show', s==='afwijzen');
     const btn = document.getElementById('submitBtn');
-    if (status === 'afwijzen') {
-      btn.textContent = 'Afwijzing versturen';
-      btn.className = 'btn btn-danger';
-    } else {
-      btn.textContent = 'Reactie versturen →';
-      btn.className = 'btn btn-primary';
-    }
+    btn.textContent = s==='akkoord' ? 'Reactie versturen →' : 'Afwijzing versturen';
+    btn.className   = s==='akkoord' ? 'btn btn-primary' : 'btn btn-danger';
   }
 
   // ── Helpers ──────────────────────────────────────────────────────
-  function showLoading(text) {
-    document.getElementById('loadingText').textContent = text;
-    document.getElementById('loadingOverlay').classList.add('show');
-  }
-  function hideLoading() { document.getElementById('loadingOverlay').classList.remove('show'); }
-  function showError(msg) {
-    const el = document.getElementById('errorMsg');
-    el.textContent = msg;
-    el.classList.add('show');
-    setTimeout(() => el.classList.remove('show'), 6000);
-  }
-  function setPanel(n) {
-    for (let i = 1; i <= 3; i++) {
-      document.getElementById('panel' + i).classList.toggle('active', i === n);
-    }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }
+  function showLoad(t) { document.getElementById('loadingText').textContent=t; document.getElementById('loadingOverlay').classList.add('show'); }
+  function hideLoad()  { document.getElementById('loadingOverlay').classList.remove('show'); }
+  function showErr(msg){ const e=document.getElementById('errorMsg'); e.textContent=msg; e.classList.add('show'); setTimeout(()=>e.classList.remove('show'),6000); }
+  function setPanel(n) { for(let i=1;i<=3;i++) document.getElementById('panel'+i).classList.toggle('active',i===n); window.scrollTo({top:0,behavior:'smooth'}); }
 
-  // ── Verstuur reactie ─────────────────────────────────────────────
+  // ── Verstuur ─────────────────────────────────────────────────────
   async function verstuurReactie() {
     const btn = document.getElementById('submitBtn');
     btn.disabled = true;
 
     if (selectedStatus === 'akkoord') {
-      const prijs = document.getElementById('prijs').value.trim();
-      const datum = document.getElementById('datum').value;
-      if (!prijs || !datum) {
-        showError('Vul minimaal de indicatieprijs en datum in.');
-        btn.disabled = false;
-        return;
-      }
+      const rawPrijs = parseFloat(document.getElementById('prijsInput').value);
+      const datum    = document.getElementById('datum').value;
+      const adres    = document.getElementById('adres').value.trim();
 
-      const datumFormatted = new Date(datum).toLocaleDateString('nl-NL', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
-      const tijd     = document.getElementById('tijd').value;
-      const adres    = document.getElementById('adres').value || '—';
-      const opmerking = document.getElementById('opmerking').value || '—';
+      if (!rawPrijs || rawPrijs <= 0) { showErr('Vul een geldige prijs in.'); btn.disabled=false; return; }
+      if (!datum)                      { showErr('Vul een datum in.'); btn.disabled=false; return; }
+      if (!adres)                      { showErr('Vul het adres van de wraplocatie in.'); btn.disabled=false; return; }
 
-      showLoading('Bevestigingen versturen...');
+      const commissie    = rawPrijs * COMMISSIE;
+      const totaal       = rawPrijs + commissie;
+      const tijd         = document.getElementById('tijd').value || '—';
+      const opmerking    = document.getElementById('opmerking').value || '—';
+      const datumFormatted = new Date(datum).toLocaleDateString('nl-NL',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
 
-      // Stuur naar klant
-      const paramsKlant = {
+      const prijsDisplay = `${fmt(totaal)} incl. commissie (jouw deel: ${fmt(rawPrijs)})`;
+
+      showLoad('Bevestigingen versturen...');
+
+      const base = {
         ref:          dealData.ref,
-        naam:         dealData.klantNaam,
-        to_email:     dealData.klantEmail,
         wrapper_naam: dealData.wrapperNaam,
         voertuig:     dealData.voertuig,
         kenteken:     dealData.kenteken,
+        wrap_locatie: dealData.wrapLocatie,
         datum:        datumFormatted,
         tijd:         tijd,
-        prijs:        prijs,
         adres:        adres,
+        prijs:        prijsDisplay,
         opmerking:    opmerking,
-      };
-
-      // Stuur naar autohouder
-      const paramsHouder = {
-        ...paramsKlant,
-        naam:     dealData.houderNaam,
-        to_email: dealData.houderEmail,
+        ontwerp_link: dealData.ontwerpUrl || '(geen ontwerp meegestuurd)',
       };
 
       try {
-        await emailjs.send(EMAILJS_SERVICE_ID, TEMPLATE_BEVESTIGING, paramsKlant);
-        await emailjs.send(EMAILJS_SERVICE_ID, TEMPLATE_BEVESTIGING, paramsHouder);
-        hideLoading();
+        // Naar klant
+        await emailjs.send(EMAILJS_SERVICE_ID, TEMPLATE_BEVESTIGING, { ...base, naam: dealData.klantNaam, to_email: dealData.klantEmail });
+        // Naar autohouder
+        await emailjs.send(EMAILJS_SERVICE_ID, TEMPLATE_BEVESTIGING, { ...base, naam: dealData.houderNaam, to_email: dealData.houderEmail });
+
+        hideLoad();
 
         document.getElementById('confirmCards').innerHTML = `
           <div class="confirm-card"><div class="confirm-card-label">Wrapper</div><div class="confirm-card-val">${dealData.wrapperNaam}</div></div>
-          <div class="confirm-card"><div class="confirm-card-label">Indicatieprijs</div><div class="confirm-card-val">${prijs} excl. BTW</div></div>
           <div class="confirm-card"><div class="confirm-card-label">Datum</div><div class="confirm-card-val">${datumFormatted}</div></div>
-          <div class="confirm-card"><div class="confirm-card-label">Tijdslot</div><div class="confirm-card-val">${tijd}</div></div>
+          <div class="confirm-card"><div class="confirm-card-label">Tijdstip</div><div class="confirm-card-val">${tijd}</div></div>
+          <div class="confirm-card"><div class="confirm-card-label">Adres</div><div class="confirm-card-val">${adres}</div></div>
+          <div class="confirm-card"><div class="confirm-card-label">Jouw prijs</div><div class="confirm-card-val">${fmt(rawPrijs)}</div></div>
+          <div class="confirm-card"><div class="confirm-card-label">Klant betaalt</div><div class="confirm-card-val" style="color:var(--lime);">${fmt(totaal)}</div></div>
         `;
 
         document.getElementById('recipientsList').innerHTML = `
           <div class="recipient">
             <div class="recipient-icon" style="background:rgba(197,227,132,0.15);">👤</div>
-            <div>
-              <div class="recipient-name">${dealData.klantNaam} <span style="color:var(--text-muted);font-size:12px;">(klant)</span></div>
-              <div class="recipient-email">${dealData.klantEmail}</div>
-            </div>
+            <div><div class="recipient-name">${dealData.klantNaam} <span style="color:var(--text-muted);font-size:12px;">(klant)</span></div><div class="recipient-email">${dealData.klantEmail}</div></div>
             <div class="recipient-status">✓ Verstuurd</div>
           </div>
           <div class="recipient">
             <div class="recipient-icon" style="background:rgba(197,227,132,0.15);">🚐</div>
-            <div>
-              <div class="recipient-name">${dealData.houderNaam} <span style="color:var(--text-muted);font-size:12px;">(autohouder)</span></div>
-              <div class="recipient-email">${dealData.houderEmail}</div>
-            </div>
+            <div><div class="recipient-name">${dealData.houderNaam} <span style="color:var(--text-muted);font-size:12px;">(autohouder)</span></div><div class="recipient-email">${dealData.houderEmail}</div></div>
             <div class="recipient-status">✓ Verstuurd</div>
           </div>
         `;
@@ -384,17 +369,15 @@
         document.getElementById('finalRef').textContent = dealData.ref;
         setPanel(2);
 
-      } catch (err) {
-        hideLoading();
-        btn.disabled = false;
-        showError('Versturen mislukt: ' + (err.text || err.message || 'Controleer je EmailJS configuratie.'));
+      } catch(err) {
+        hideLoad(); btn.disabled=false;
+        showErr('Versturen mislukt: ' + (err.text||err.message||'Onbekende fout'));
       }
 
     } else {
-      // Afwijzing
-      showLoading('Afwijzing verwerken...');
-      await new Promise(r => setTimeout(r, 1200));
-      hideLoading();
+      showLoad('Afwijzing verwerken...');
+      await new Promise(r=>setTimeout(r,1200));
+      hideLoad();
       document.getElementById('finalRefAfwijzing').textContent = dealData.ref;
       setPanel(3);
     }
