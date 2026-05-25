@@ -107,12 +107,18 @@
       <div class="field"><label>Postcode</label><input type="text" id="fPostcode" placeholder="4811 KA"></div>
       <div class="field"><label>Stad</label><input type="text" id="fStad" placeholder="Breda"></div>
     </div>
-    <div class="form-grid">
+    <div class="form-grid single">
       <div class="field">
-        <label>Latitude</label>
-        <input type="number" id="fLat" placeholder="51.5879" step="0.0001">
-        <span class="field-hint">Zoek op maps.google.com → rechtermuisknop → coördinaten kopiëren</span>
+        <label>Adres opzoeken voor coördinaten</label>
+        <div style="display:flex;gap:8px;">
+          <input type="text" id="fGeoInput" placeholder="bijv. Industrieweg 14, Breda" style="flex:1;">
+          <button type="button" class="btn btn-ghost" id="geoBtn" onclick="zoekCoordinaten()" style="white-space:nowrap;padding:11px 16px;font-size:13px;">📍 Opzoeken</button>
+        </div>
+        <span class="field-hint" id="geoStatus">Vul het adres in en klik opzoeken — lat/lng worden automatisch ingevuld.</span>
       </div>
+    </div>
+    <div class="form-grid" style="display:none;" id="latlngVelden">
+      <div class="field"><label>Latitude</label><input type="number" id="fLat" placeholder="51.5879" step="0.0001"></div>
       <div class="field"><label>Longitude</label><input type="number" id="fLng" placeholder="4.7751" step="0.0001"></div>
     </div>
     <div class="btn-row">
@@ -362,6 +368,9 @@
     document.getElementById('fStad').value     = wrapper?.stad     || '';
     document.getElementById('fLat').value      = wrapper?.lat      || '';
     document.getElementById('fLng').value      = wrapper?.lng      || '';
+    document.getElementById('fGeoInput').value = wrapper ? (wrapper.adres || '') : '';
+    document.getElementById('latlngVelden').style.display = wrapper ? 'grid' : 'none';
+    document.getElementById('geoStatus').textContent = wrapper ? `Huidige coördinaten: ${wrapper.lat}, ${wrapper.lng}` : 'Vul het adres in en klik opzoeken — lat/lng worden automatisch ingevuld.';
     document.getElementById('modalOverlay').classList.add('show');
   }
 
@@ -370,6 +379,38 @@
   function editWrapper(id) {
     const w = allWrappers.find(w=>w.id===id);
     if (w) openModal(w);
+  }
+
+  // ── Geo lookup ──────────────────────────────────────────────────
+  async function zoekCoordinaten() {
+    const adres = document.getElementById('fGeoInput').value.trim();
+    if (!adres) { document.getElementById('geoStatus').textContent = 'Vul eerst een adres in.'; return; }
+    const btn = document.getElementById('geoBtn');
+    btn.disabled = true;
+    btn.textContent = '⏳ Zoeken...';
+    document.getElementById('geoStatus').textContent = 'Adres opzoeken...';
+    try {
+      const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(adres)}&countrycodes=nl&limit=1`;
+      const res = await fetch(url, { headers: { 'Accept-Language': 'nl', 'User-Agent': 'BackPromo/1.0' } });
+      const data = await res.json();
+      if (!data.length) {
+        document.getElementById('geoStatus').textContent = '⚠️ Adres niet gevonden. Probeer een volledigere omschrijving.';
+        btn.disabled = false; btn.textContent = '📍 Opzoeken'; return;
+      }
+      const lat = parseFloat(data[0].lat).toFixed(6);
+      const lng = parseFloat(data[0].lon).toFixed(6);
+      document.getElementById('fLat').value = lat;
+      document.getElementById('fLng').value = lng;
+      document.getElementById('latlngVelden').style.display = 'grid';
+      document.getElementById('geoStatus').innerHTML = `✓ Gevonden: <strong style="color:var(--lime)">${data[0].display_name.split(',').slice(0,3).join(',')}</strong> · ${lat}, ${lng}`;
+      // Vul ook adres/postcode/stad in als leeg
+      if (!document.getElementById('fAdres').value) document.getElementById('fAdres').value = adres;
+      const parts = data[0].display_name.split(', ');
+      if (!document.getElementById('fStad').value && parts.length > 1) document.getElementById('fStad').value = parts[parts.length - 3] || '';
+    } catch(e) {
+      document.getElementById('geoStatus').textContent = '⚠️ Opzoeken mislukt. Controleer je internetverbinding.';
+    }
+    btn.disabled = false; btn.textContent = '📍 Opzoeken';
   }
 
   // ── Save ─────────────────────────────────────────────────────────
