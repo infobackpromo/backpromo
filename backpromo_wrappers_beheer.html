@@ -79,6 +79,37 @@
   .popup-name { font-family:'Bricolage Grotesque',sans-serif; font-weight:700; font-size:14px; color:#C5E384; margin-bottom:3px; }
   .popup-meta { font-size:12px; color:rgba(245,245,240,0.6); }
   @media(max-width:600px) { .form-grid{grid-template-columns:1fr} .stats-row{grid-template-columns:1fr 1fr} .wrapper-grid{grid-template-columns:1fr} }
+
+  /* ── Mobile ─────────────────────────────────────────────────────── */
+  @media (max-width: 640px) {
+    .app { padding: 0 16px 60px !important; }
+    .nav-bar { padding: 14px 16px !important; }
+    .nav-link span.step-name { display: none; }
+    .steps { gap: 4px !important; margin-bottom: 28px !important; }
+    .step-name { display: none !important; }
+    .step-line { margin: 0 6px !important; }
+    .panel-title { font-size: 22px !important; }
+    .form-grid { grid-template-columns: 1fr !important; }
+    .confirm-cards { grid-template-columns: 1fr !important; }
+    .map-layout { grid-template-columns: 1fr !important; height: auto !important; }
+    #map { height: 260px !important; }
+    .wrapper-list { max-height: 240px !important; }
+    .map-footer { flex-wrap: wrap !important; gap: 8px !important; }
+    .map-footer .btn { flex: 1 !important; text-align: center !important; }
+    .selected-info { width: 100% !important; }
+    .btn-row { flex-wrap: wrap !important; }
+    .btn-row .btn { flex: 1 !important; text-align: center !important; min-width: 120px !important; }
+    .stats-row { grid-template-columns: 1fr 1fr !important; }
+    .wrapper-grid { grid-template-columns: 1fr !important; }
+    .status-toggle { flex-direction: column !important; }
+    .aanvraag-label { width: 90px !important; }
+    .mail-preview .mail-body { padding: 16px !important; }
+    .toolbar { flex-direction: column !important; align-items: stretch !important; }
+    .search-input { width: 100% !important; }
+    .modal { padding: 20px 16px !important; }
+    .prijs-calc { padding: 12px !important; }
+  }
+
 </style>
 </head>
 <body>
