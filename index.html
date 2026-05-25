@@ -291,14 +291,30 @@
 
   emailjs.init(EMAILJS_PUBLIC_KEY);
 
-  // ── Demo wrappers (NL locaties) ─────────────────────────────────
-  const WRAPPERS = [
-    { id:1, naam:'VanWrap Breda',        initials:'VW', email:DEMO_EMAIL, rating:'4.8', opdrachten:23, lat:51.5879, lng:4.7751, adres:'Industrieweg 14, Breda' },
-    { id:2, naam:'Sticker Pro Tilburg',  initials:'SP', email:DEMO_EMAIL, rating:'4.6', opdrachten:41, lat:51.5605, lng:5.0835, adres:'Koningsweg 8, Tilburg' },
-    { id:3, naam:'WrapMeister Roosendaal',initials:'WM',email:DEMO_EMAIL, rating:'4.9', opdrachten:67, lat:51.5388, lng:4.4609, adres:'Havenstraat 22, Roosendaal' },
-    { id:4, naam:'AutoWrap Eindhoven',   initials:'AW', email:DEMO_EMAIL, rating:'4.7', opdrachten:18, lat:51.4416, lng:5.4697, adres:'Tramstraat 5, Eindhoven' },
-    { id:5, naam:'Folie King Bergen op Zoom', initials:'FK', email:DEMO_EMAIL, rating:'4.5', opdrachten:34, lat:51.4940, lng:4.2860, adres:'Bergseweg 77, Bergen op Zoom' },
-  ];
+  // ── Wrappers live uit Sheety ─────────────────────────────────────
+  const SHEETY = 'https://api.sheety.co/bd2678cf888de4dd7e529578db2955d2/backPromoWrappers/blad1';
+  let WRAPPERS = [];
+
+  async function laadWrappers() {
+    try {
+      showLoad('Wrappers laden...');
+      const res = await fetch(SHEETY);
+      const data = await res.json();
+      WRAPPERS = (data.blad1 || []).map(w => ({
+        ...w,
+        initials: w.naam ? w.naam.split(' ').map(x=>x[0]).join('').toUpperCase().slice(0,2) : '??',
+        email: w.email || DEMO_EMAIL,
+        lat: parseFloat(w.lat),
+        lng: parseFloat(w.lng),
+      }));
+      hideLoad();
+    } catch(e) {
+      hideLoad();
+      WRAPPERS = [];
+      alert('Kon wrappers niet laden. Controleer de Sheety API.');
+    }
+  }
+
 
   // ── State ────────────────────────────────────────────────────────
   let uploadedFile = null;
@@ -385,6 +401,8 @@
       postcode:     document.getElementById('postcode').value,
       bijzonderheden: document.getElementById('bijzonderheden').value,
     };
+    // Laad wrappers live uit Sheety
+    await laadWrappers();
     btn.disabled = false;
     setStep(2);
   }
