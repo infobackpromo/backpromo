@@ -122,6 +122,103 @@
   </div>
 </div>
 
+
+  <!-- NAV -->
+  <style>
+    .nav-bar { display:flex; align-items:center; justify-content:space-between; padding:16px 24px; background:rgba(32,15,7,0.95); border-bottom:1px solid rgba(197,227,132,0.12); position:sticky; top:0; z-index:100; backdrop-filter:blur(8px); }
+    .nav-logo { font-family:'Syne',sans-serif; font-weight:800; font-size:18px; letter-spacing:-0.5px; text-decoration:none; color:#F5F5F0; }
+    .nav-logo span { color:#C5E384; }
+    .nav-links { display:flex; gap:6px; }
+    .nav-link { font-family:'DM Mono',monospace; font-size:12px; padding:7px 14px; border-radius:8px; text-decoration:none; color:rgba(245,245,240,0.6); transition:all 0.2s; border:1px solid transparent; }
+    .nav-link:hover { color:#F5F5F0; background:rgba(245,245,240,0.06); }
+    .nav-link.active { color:#C5E384; border-color:rgba(197,227,132,0.2); background:rgba(197,227,132,0.08); }
+  </style>
+  <nav class="nav-bar">
+    <a class="nav-logo" href="/index.html">Back<span>Promo</span></a>
+    <div class="nav-links">
+      <a class="nav-link " href="/index.html">Aanvraag</a>
+      <a class="nav-link active" href="/backpromo_wrappers_beheer.html">Wrappers</a>
+    </div>
+  </nav>
+
+
+  <!-- PIN OVERLAY -->
+  <style>
+    .pin-overlay { position:fixed; inset:0; background:var(--dark); z-index:9998; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:0; }
+    .pin-overlay.hidden { display:none; }
+    .pin-box { background:rgba(245,245,240,0.04); border:1px solid rgba(197,227,132,0.15); border-radius:16px; padding:36px 32px; text-align:center; width:320px; }
+    .pin-logo { font-family:'Syne',sans-serif; font-weight:800; font-size:22px; margin-bottom:24px; }
+    .pin-logo span { color:#C5E384; }
+    .pin-title { font-family:'Syne',sans-serif; font-weight:700; font-size:18px; margin-bottom:6px; }
+    .pin-sub { font-size:13px; color:rgba(245,245,240,0.5); margin-bottom:24px; }
+    .pin-dots { display:flex; gap:10px; justify-content:center; margin-bottom:20px; }
+    .pin-dot { width:14px; height:14px; border-radius:50%; border:2px solid rgba(197,227,132,0.3); transition:all 0.15s; }
+    .pin-dot.filled { background:#C5E384; border-color:#C5E384; }
+    .pin-dot.error { background:#ff7070; border-color:#ff7070; animation:shake 0.3s; }
+    @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-4px)} 75%{transform:translateX(4px)} }
+    .pin-pad { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+    .pin-key { background:rgba(245,245,240,0.06); border:1px solid rgba(245,245,240,0.1); border-radius:10px; padding:16px; font-family:'Syne',sans-serif; font-weight:700; font-size:18px; cursor:pointer; transition:all 0.15s; color:#F5F5F0; }
+    .pin-key:hover { background:rgba(197,227,132,0.12); border-color:rgba(197,227,132,0.3); }
+    .pin-key:active { transform:scale(0.95); }
+    .pin-key.del { font-size:14px; color:rgba(245,245,240,0.5); }
+  </style>
+  <div class="pin-overlay" id="pinOverlay">
+    <div class="pin-box">
+      <div class="pin-logo">Back<span>Promo</span></div>
+      <div class="pin-title">Beheer toegang</div>
+      <div class="pin-sub">Voer de 4-cijferige code in</div>
+      <div class="pin-dots" id="pinDots">
+        <div class="pin-dot" id="pd0"></div>
+        <div class="pin-dot" id="pd1"></div>
+        <div class="pin-dot" id="pd2"></div>
+        <div class="pin-dot" id="pd3"></div>
+      </div>
+      <div class="pin-pad">
+        <button class="pin-key" onclick="pinKey('1')">1</button>
+        <button class="pin-key" onclick="pinKey('2')">2</button>
+        <button class="pin-key" onclick="pinKey('3')">3</button>
+        <button class="pin-key" onclick="pinKey('4')">4</button>
+        <button class="pin-key" onclick="pinKey('5')">5</button>
+        <button class="pin-key" onclick="pinKey('6')">6</button>
+        <button class="pin-key" onclick="pinKey('7')">7</button>
+        <button class="pin-key" onclick="pinKey('8')">8</button>
+        <button class="pin-key" onclick="pinKey('9')">9</button>
+        <button class="pin-key" style="visibility:hidden;"></button>
+        <button class="pin-key" onclick="pinKey('0')">0</button>
+        <button class="pin-key del" onclick="pinDel()">⌫</button>
+      </div>
+    </div>
+  </div>
+  <script>
+    const PIN_CORRECT = '2357';
+    let pinEntry = '';
+    const pinSession = sessionStorage.getItem('bp_beheer');
+    if (pinSession === 'ok') document.getElementById('pinOverlay').classList.add('hidden');
+    function pinKey(k) {
+      if (pinEntry.length >= 4) return;
+      pinEntry += k;
+      updateDots();
+      if (pinEntry.length === 4) checkPin();
+    }
+    function pinDel() { pinEntry = pinEntry.slice(0,-1); updateDots(); }
+    function updateDots() {
+      for (let i=0;i<4;i++) {
+        const d = document.getElementById('pd'+i);
+        d.classList.toggle('filled', i < pinEntry.length);
+        d.classList.remove('error');
+      }
+    }
+    function checkPin() {
+      if (pinEntry === PIN_CORRECT) {
+        sessionStorage.setItem('bp_beheer','ok');
+        document.getElementById('pinOverlay').classList.add('hidden');
+      } else {
+        for (let i=0;i<4;i++) document.getElementById('pd'+i).classList.add('error');
+        setTimeout(()=>{ pinEntry=''; updateDots(); }, 600);
+      }
+    }
+  </script>
+
 <div class="app">
   <div class="header">
     <div class="logo">Back<span>Promo</span></div>
