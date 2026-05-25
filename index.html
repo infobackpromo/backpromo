@@ -319,13 +319,20 @@
       showLoad('Wrappers laden...');
       const res = await fetch(SHEETY);
       const data = await res.json();
-      WRAPPERS = (data.blad1 || []).map(w => ({
-        ...w,
-        initials: w.naam ? w.naam.split(' ').map(x=>x[0]).join('').toUpperCase().slice(0,2) : '??',
-        email: w.email || DEMO_EMAIL,
-        lat: parseFloat(w.lat),
-        lng: parseFloat(w.lng),
-      }));
+      const raw = data.blad1 || [];
+      console.log('[BackPromo] Sheety response:', raw);
+      WRAPPERS = raw.map(w => {
+        // Sheety kan andere kolomnamen teruggeven — probeer varianten
+        const lat = parseFloat(w.lat || w.latitude || w.Lat || w.LAT || 0);
+        const lng = parseFloat(w.lng || w.longitude || w.lon || w.Lng || w.LNG || 0);
+        return {
+          ...w,
+          initials: w.naam ? w.naam.split(' ').map(x=>x[0]).join('').toUpperCase().slice(0,2) : '??',
+          email: w.email || DEMO_EMAIL,
+          lat, lng,
+        };
+      }).filter(w => !isNaN(w.lat) && !isNaN(w.lng) && w.lat !== 0 && w.lng !== 0);
+      console.log('[BackPromo] Wrappers geladen:', WRAPPERS.length, WRAPPERS);
       hideLoad();
     } catch(e) {
       hideLoad();
