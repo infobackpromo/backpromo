@@ -109,12 +109,11 @@
     </div>
     <div class="form-grid single">
       <div class="field">
-        <label>Adres opzoeken voor coördinaten</label>
-        <div style="display:flex;gap:8px;">
-          <input type="text" id="fGeoInput" placeholder="bijv. Industrieweg 14, Breda" style="flex:1;">
-          <button type="button" class="btn btn-ghost" id="geoBtn" onclick="zoekCoordinaten()" style="white-space:nowrap;padding:11px 16px;font-size:13px;">📍 Opzoeken</button>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+          <label style="margin-bottom:0;">Coördinaten</label>
+          <button type="button" class="btn btn-ghost" id="geoBtn" onclick="zoekCoordinaten()" style="padding:5px 12px;font-size:12px;">📍 Bereken op basis van adres</button>
         </div>
-        <span class="field-hint" id="geoStatus">Vul het adres in en klik opzoeken — lat/lng worden automatisch ingevuld.</span>
+        <span class="field-hint" id="geoStatus">Vul eerst adres, postcode en stad in — klik dan Bereken.</span>
       </div>
     </div>
     <div class="form-grid" style="display:none;" id="latlngVelden">
@@ -368,7 +367,7 @@
     document.getElementById('fStad').value     = wrapper?.stad     || '';
     document.getElementById('fLat').value      = wrapper?.lat      || '';
     document.getElementById('fLng').value      = wrapper?.lng      || '';
-    document.getElementById('fGeoInput').value = wrapper ? (wrapper.adres || '') : '';
+
     document.getElementById('latlngVelden').style.display = wrapper ? 'grid' : 'none';
     document.getElementById('geoStatus').textContent = wrapper ? `Huidige coördinaten: ${wrapper.lat}, ${wrapper.lng}` : 'Vul het adres in en klik opzoeken — lat/lng worden automatisch ingevuld.';
     document.getElementById('modalOverlay').classList.add('show');
@@ -383,14 +382,17 @@
 
   // ── Geo lookup ──────────────────────────────────────────────────
   async function zoekCoordinaten() {
-    const adres = document.getElementById('fGeoInput').value.trim();
-    if (!adres) { document.getElementById('geoStatus').textContent = 'Vul eerst een adres in.'; return; }
+    const adres   = document.getElementById('fAdres').value.trim();
+    const postcode = document.getElementById('fPostcode').value.trim();
+    const stad    = document.getElementById('fStad').value.trim();
+    const zoekterm = [adres, postcode, stad].filter(Boolean).join(', ');
+    if (!zoekterm) { document.getElementById('geoStatus').textContent = 'Vul eerst adres, postcode en/of stad in.'; return; }
     const btn = document.getElementById('geoBtn');
     btn.disabled = true;
     btn.textContent = '⏳ Zoeken...';
     document.getElementById('geoStatus').textContent = 'Adres opzoeken...';
     try {
-      const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(adres)}&countrycodes=nl&limit=1`;
+      const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(zoekterm)}&countrycodes=nl&limit=1`;
       const res = await fetch(url, { headers: { 'Accept-Language': 'nl', 'User-Agent': 'BackPromo/1.0' } });
       const data = await res.json();
       if (!data.length) {
@@ -403,10 +405,7 @@
       document.getElementById('fLng').value = lng;
       document.getElementById('latlngVelden').style.display = 'grid';
       document.getElementById('geoStatus').innerHTML = `✓ Gevonden: <strong style="color:var(--lime)">${data[0].display_name.split(',').slice(0,3).join(',')}</strong> · ${lat}, ${lng}`;
-      // Vul ook adres/postcode/stad in als leeg
-      if (!document.getElementById('fAdres').value) document.getElementById('fAdres').value = adres;
-      const parts = data[0].display_name.split(', ');
-      if (!document.getElementById('fStad').value && parts.length > 1) document.getElementById('fStad').value = parts[parts.length - 3] || '';
+      // adres/stad zijn al ingevuld
     } catch(e) {
       document.getElementById('geoStatus').textContent = '⚠️ Opzoeken mislukt. Controleer je internetverbinding.';
     }
